@@ -1,18 +1,23 @@
+// LIBS INCLUDE
 #include <ESP8266WiFi.h>
 #include <DHT.h>
-#define DHTPIN D2
-#define DHTTYPE DHT11
-#define  MOISTURE_THRESHOLD 55
 
+// PIN DEFINITIONS
+#define DHTPIN D2
+#define MOISTUREPIN A0
+#define FANPIN D8
+
+// OTHER DEFINITIONS
+#define DHTTYPE DHT11
+
+//VARIABLES DECLARATION
 DHT dht(DHTPIN, DHTTYPE);
 
 const char *ssid = "Cormac";
 const char *password = "+Ah(nstP7.U7+qz";
-
 const char *host = "192.168.100.17";
 
-// soil moisture pin define
-int moisture_Pin= 0; // Soil Moisture Sensor input at Analog PIN A0
+// soil moisture value define
 int moisture_value= 0, moisture_state = 0xFF;
 
 // function to connect Wifi
@@ -54,7 +59,10 @@ float getTemp()
 
 // get soil moisture value from sensor
 float getSoil(){
-    moisture_value = analogRead(moisture_Pin);
+    moisture_value = analogRead(MOISTUREPIN);
+    // convert analog value to percentage
+    moisture_value = map(moisture_value, 550, 0, 0, 100);
+
     if(isnan(moisture_value)){
         return -1;
     }
@@ -82,6 +90,13 @@ void loop()
         Serial.printf("Nhiệt độ hiện tại là: %f \n", temperature);
         Serial.printf("Độ ẩm đất hiện tại là : %f \n", soil_moisture);
 
+        if(temperature >= 28){
+            digitalWrite(FANPIN, 1);
+        }
+        else{
+            digitalWrite(FANPIN, 0);
+        }
+
         // Use WiFiClient class to create TCP connections
         WiFiClient client;
         const int httpPort = 8000;
@@ -96,7 +111,9 @@ void loop()
 
         Serial.print("Requesting URL: ");
         Serial.println(url);
-        String data = "temperature=" + String(temperature) + "soil_moisture=" + String(soil_moisture);
+        
+        // 1st param is temp, 2nd is moisture 
+        String data = String(temperature) + "," + String(soil_moisture);
 
         Serial.print("Requesting POST: ");
         // Send request to the server:
