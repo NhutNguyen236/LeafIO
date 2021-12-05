@@ -10,7 +10,7 @@
 // OTHER DEFINITIONS
 #define DHTTYPE DHT11
 
-//VARIABLES DECLARATION
+// VARIABLES DECLARATION
 DHT dht(DHTPIN, DHTTYPE);
 
 const char *ssid = "Cormac";
@@ -18,7 +18,7 @@ const char *password = "+Ah(nstP7.U7+qz";
 const char *host = "192.168.100.17";
 
 // soil moisture value define
-int moisture_value= 0, moisture_state = 0xFF;
+int moisture_value = 0, moisture_state = 0xFF;
 
 // function to connect Wifi
 void wifiConnect()
@@ -58,12 +58,14 @@ float getTemp()
 }
 
 // get soil moisture value from sensor
-float getSoil(){
+float getSoil()
+{
     moisture_value = analogRead(MOISTUREPIN);
     // convert analog value to percentage
     moisture_value = map(moisture_value, 550, 0, 0, 100);
 
-    if(isnan(moisture_value)){
+    if (isnan(moisture_value))
+    {
         return -1;
     }
     return moisture_value;
@@ -72,7 +74,15 @@ float getSoil(){
 void setup()
 {
     Serial.begin(9600);
+
+    // configure input pin for sensors
+    pinMode(DHTPIN, INPUT);
+
+    // configure output pin for actuators
+    pinMode(FANPIN, OUTPUT);
+
     delay(10);
+
     // connect to wifi
     wifiConnect();
 }
@@ -85,15 +95,21 @@ void loop()
     float soil_moisture = getSoil();
 
     // check if there is any error while reading data from DHT11 or not
-    if (temperature != -1 || soil_moisture != -1)
+    if (temperature == -1 || soil_moisture == -1)
+    {
+        Serial.println("Failed to read from DHT sensor or soil moisture sensor!");
+    }
+    else
     {
         Serial.printf("Nhiệt độ hiện tại là: %f \n", temperature);
         Serial.printf("Độ ẩm đất hiện tại là : %f \n", soil_moisture);
 
-        if(temperature >= 28){
+        if (temperature >= 28)
+        {
             digitalWrite(FANPIN, 1);
         }
-        else{
+        else
+        {
             digitalWrite(FANPIN, 0);
         }
 
@@ -111,8 +127,8 @@ void loop()
 
         Serial.print("Requesting URL: ");
         Serial.println(url);
-        
-        // 1st param is temp, 2nd is moisture 
+
+        // 1st param is temp, 2nd is moisture
         String data = String(temperature) + "," + String(soil_moisture);
 
         Serial.print("Requesting POST: ");
@@ -149,9 +165,5 @@ void loop()
 
         Serial.println();
         Serial.println("closing connection");
-    }
-    else
-    {
-        Serial.println("Failed to read from DHT sensor!");
     }
 }
