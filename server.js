@@ -37,7 +37,8 @@ app.post("/", function (req, res) {
     res.send("Got the temp data, thanks..!!");
     // save the record to the database
     // tempController.saveTemp(req.body);
-    console.log(req.body.temp)
+    console.log(type(req.body));
+    console.log(req.body)
     console.log(JSON.stringify(req.body));
 });
 
