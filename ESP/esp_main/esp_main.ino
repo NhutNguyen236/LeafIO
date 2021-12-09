@@ -122,7 +122,7 @@ void clientComm(float temperature, float soil_moisture, int light)
     Serial.println(url);
 
     // 1st param is temp, 2nd is moisture
-    String data = "temperature=" + String(temperature) + "&" + "soil=" + String(soil_moisture) + & "light=" + String(light);
+    String temp_data = "temperature=" + String(temperature) + "&" + "soil=" + String(soil_moisture) + "&" + "light=" + String(light);
     
     Serial.print("Requesting POST: ");
     // Send request to the server:
@@ -131,9 +131,9 @@ void clientComm(float temperature, float soil_moisture, int light)
     client.println("Accept: */*");
     client.println("Content-Type: application/x-www-form-urlencoded");
     client.print("Content-Length: ");
-    client.println(data.length());
+    client.println((temp_data).length());
     client.println();
-    client.println(data);
+    client.println(temp_data);
     // This will send the request to the server
     /*this is a get method working
      * client.print(String("GET ") + url + " HTTP/1.1\r\n" +
