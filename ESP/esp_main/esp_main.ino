@@ -31,7 +31,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 const char *ssid = "Cormac";
 const char *password = "+Ah(nstP7.U7+qz";
 const char *host = "192.168.100.17";
-const int httpPort = 8000;
+const int httpPort = 3000;
 
 // soil moisture value define
 int moisture_value = 0, moisture_state = 0xFF;
@@ -134,10 +134,13 @@ void clientComm(float temperature, float soil_moisture, int light)
     client.println((temp_data).length());
     client.println();
     client.println(temp_data);
+
     // This will send the request to the server
-    /*this is a get method working
-     * client.print(String("GET ") + url + " HTTP/1.1\r\n" +
-              "Connection: close\r\n\r\n");*/
+    /*this is a get method working*/
+    // this GET req is for printing on dashboard
+    // client.print(String("GET ") + url + " HTTP/1.1\r\n" + temp_data + 
+    //           "Connection: close\r\n\r\n");
+    
     unsigned long timeout = millis();
     while (client.available() == 0)
     {
