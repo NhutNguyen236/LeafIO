@@ -5,7 +5,14 @@ var mongoose = require("mongoose");
 var path = require("path");
 var server = require("http").createServer(app);
 var io = require("socket.io")(server);
+
+// dotenv config
+var dotenv = require("dotenv");
+dotenv.config({ path: "./config/.env" });
+
+// nodemailer for sending emails and nodemailer-handlebars for templating mailing
 var nodemailer = require("nodemailer");
+const hbs = require("nodemailer-handlebars");
 
 var bodyParser = require("body-parser");
 
@@ -47,6 +54,29 @@ var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {});
 
+// ======================Nodemailer email config==============================//
+// transporter for sending emails
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        // email and password is in .env but you have to define your new one :D
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD,
+    },
+});
+
+// Send to client a waiting email
+transporter.use(
+    "compile",
+    hbs({
+        viewEngine: {
+            defaultLayout: false,
+            extName: "express-handlebars",
+        },
+        viewPath: "./views",
+    })
+);
+
 // route get
 app.get("/", function (req, res) {
     // init an empty json object for data
@@ -66,9 +96,40 @@ app.get("/", function (req, res) {
                         .sort({ createdAt: -1 })
                         .then(function (light) {
                             data.light = light.light;
-                            
 
                             res.render("index", { data: data });
+
+                            // send email to client if the soil moisture is less than 10%
+                            if (data.soil < 10) {
+                                let mailOptionsClient = {
+                                    from: process.env.EMAIL,
+                                    to: "phamp9331@gmail.com",
+                                    subject:
+                                        "⚠ Please keep your eyes on your garden ⚠",
+                                    template: "mail",
+                                    context: {
+                                        name: 'Nhut',
+                                        temperature: data.temp,
+                                        soil: data.soil,
+                                        light: data.light
+                                    }, // send extra values to template
+                                };
+
+                                transporter.sendMail(
+                                    mailOptionsClient,
+                                    (err, data) => {
+                                        var msg = undefined;
+                                        if (err) {
+                                            console.log(err);
+                                            msg =
+                                                "We are facing some technical difficulties here, come back later 😥";
+                                            console.log(msg);
+                                        }
+                                        msg = "OK";
+                                        console.log(msg)
+                                    }
+                                );
+                            }
                         });
                 });
         });
