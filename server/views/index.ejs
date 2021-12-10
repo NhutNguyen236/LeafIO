@@ -1105,13 +1105,7 @@
                                                     text-center text-sm
                                                 "
                                             >
-                                                <span
-                                                    class="
-                                                        badge badge-sm
-                                                        bg-gradient-success
-                                                    "
-                                                    >Online</span
-                                                >
+                                            <button type="button" id="waterpump" class="btn btn-secondary">OFF</button>
                                             </td>
                                         </tr>
                                         <tr>
@@ -1158,13 +1152,7 @@
                                                     text-center text-sm
                                                 "
                                             >
-                                                <span
-                                                    class="
-                                                        badge badge-sm
-                                                        bg-gradient-secondary
-                                                    "
-                                                    >Offline</span
-                                                >
+                                            <button type="button" id="gardenlight" class="btn btn-secondary">OFF</button>
                                             </td>
                                         </tr>
 
@@ -1212,13 +1200,7 @@
                                                     text-center text-sm
                                                 "
                                             >
-                                                <span
-                                                    class="
-                                                        badge badge-sm
-                                                        bg-gradient-secondary
-                                                    "
-                                                    >Offline</span
-                                                >
+                                            <button type="button" id="gardenfan" class="btn btn-secondary">OFF</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1681,17 +1663,20 @@
                 socket.emit("join", "Browser connected");
             });
 
-            // change state of the led toggle value on the socket server
-            $("#toggleLED").on("click", function () {
+            // change state of the led toggle value on the socket server - gardenlight
+            $("#gardenlight").on("click", function () {
+                console.log('clicked');
                 socket.emit("toggle", { state: true });
             });
 
             // listen for the toggle event from the server
             socket.on("led", function (light) {
                 if (light.state == true) {
-                    $("#led").text("ON");
+                    $("#gardenlight").html("ON");
+                    $("#gardenlight").attr("class", "btn btn-success");
                 } else {
-                    $("#led").text("OFF");
+                    $("#gardenlight").html("OFF");
+                    $("#gardenlight").attr("class", "btn btn-secondary");
                 }
             }); 
 

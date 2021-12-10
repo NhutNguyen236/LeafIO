@@ -155,6 +155,8 @@ app.get("/", function (req, res) {
 // });
 
 var light = { state: false };
+var pump = { state: false };
+var fan = { state: false };
 var manualmode = { state: false };
 
 // socket.io part
