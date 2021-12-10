@@ -1700,6 +1700,42 @@
                     $("#manual").css("display", "none");
                 }
             });
+
+            //=============== Water pump event =======================//
+            // change state of the led toggle value on the socket server - gardenlight
+            $("#waterpump").on("click", function () {
+                socket.emit("flow", { state: true });
+            });
+
+            // listen for the toggle event from the server
+            socket.on("pump", function (pump) {
+                if (pump.state == true) {
+                    $("#waterpump").html("ON");
+                    $("#waterpump").attr("class", "btn btn-success");
+                } else {
+                    $("#waterpump").html("OFF");
+                    $("#waterpump").attr("class", "btn btn-secondary");
+                }
+            }); 
+            //=============== Water pump event end =======================//
+
+            //=============== Garden fan event =======================//
+            // change state of the led toggle value on the socket server - gardenlight
+            $("#gardenfan").on("click", function () {
+                socket.emit("spin", { state: true });
+            });
+
+            // listen for the toggle event from the server
+            socket.on("fan", function (fan) {
+                if (fan.state == true) {
+                    $("#gardenfan").html("ON");
+                    $("#gardenfan").attr("class", "btn btn-success");
+                } else {
+                    $("#gardenfan").html("OFF");
+                    $("#gardenfan").attr("class", "btn btn-secondary");
+                }
+            }); 
+            //=============== Garden fan event end =======================//
         </script>
     </body>
 </html>

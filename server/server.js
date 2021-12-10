@@ -181,13 +181,27 @@ io.on("connection", function (client) {
         io.sockets.emit("led", light);
     });
 
+    // emit a socket for water pump
+    io.sockets.emit("pump", pump);
+    client.on("flow", function (state) {
+        pump.state = !pump.state;
+        console.log("id: " + client.id + " water pump: " + pump.state);
+        io.sockets.emit("pump", pump);
+    });
+
+    // emit a socket for garden fan
+    io.sockets.emit("fan", fan);
+    client.on("spin", function (state) {
+        fan.state = !fan.state;
+        console.log("id: " + client.id + " fan: " + fan.state);
+        io.sockets.emit("fan", fan);
+    });
+
     // emit a socket for triggering manual mode
     io.sockets.emit("mode", manualmode);
     client.on("trigger", function (state) {
         manualmode.state = !manualmode.state;
-        light.state = light.state;
         console.log("id: " + client.id + " manualmode: " + manualmode.state);
-        console.log("id: " + client.id + " light: " + light.state);
         io.sockets.emit("mode", manualmode);
     });
 });
