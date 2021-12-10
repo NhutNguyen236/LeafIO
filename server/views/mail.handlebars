@@ -2,7 +2,6 @@
     <head>
         <meta name="viewport" content="width=device-width" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Simple Call To Action</title>
         <style>
             @media only screen and (max-width: 620px) { table[class=body] h1 {
             font-size: 28px !important; margin-bottom: 10px !important; }
@@ -73,10 +72,9 @@
                                         href="https://tdtu-noticlone.herokuapp.com/login"
                                         style="color: #6495ED; text-decoration: underline;"
                                     ><img
-                                            src="https://suggest.tdtu.edu.vn/Content/images/tdt_logo_white.png"
+                                            src="https://i.ibb.co/jTkY6JY/logo-ct-removebg-preview.png"
                                             height="100"
-                                            width="200"
-                                            alt="Postdrop"
+                                            width="100"
                                             style="border: none; -ms-interpolation-mode: bicubic; max-width: 100%;"
                                         /></a>
                                 </td>
@@ -123,7 +121,7 @@
                                             >
                                                 <img
                                                     class="thankyou"
-                                                    src="https://i.ibb.co/j6CxbSw/istockphoto-1156404920-612x612-removebg-preview-2.png"
+                                                    src="https://i.ibb.co/r5NhdtQ/unnamed.png"
                                                     width="250px"
                                                     style="border: none; -ms-interpolation-mode: bicubic; max-width: 100%; display: block; margin-left: auto; margin-right: auto;"
                                                 />
@@ -140,10 +138,11 @@
                                                 <p
                                                     style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"
                                                 >All your records are:</p>
-
                                                 </p>
                                                 <ul>
-                                                    
+                                                    <li>Temperature: {{temperature}} oC</li>
+                                                    <li>Soil Moisture: {{soil}} %</li>
+                                                    <li>Light intensity: {{light}} lux</li>
                                                 </ul>
 
                                             </td>
@@ -180,7 +179,7 @@
                                                                         bgcolor="#6495ED"
                                                                     >
                                                                         <a
-                                                                            href="https://postdrop.io"
+                                                                            href="http://localhost:3000"
                                                                             target="_blank"
                                                                             style="border: solid 1px #6495ED; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-decoration: none; text-transform: capitalize; background-color: #6495ED; border-color: #6495ED; color: #ffffff;"
                                                                         >Go back

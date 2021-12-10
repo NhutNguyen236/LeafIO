@@ -988,11 +988,11 @@
                         SWITCH TO MANUAL MODE
                     </h3>
                     <label class="switch">
-                        <input type="checkbox">
+                        <input id="manualmode" type="checkbox">
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="col-12">
+                <div class="col-12" id="manual">
                     <div class="card my-4">
                         <div
                             class="
@@ -1688,7 +1688,6 @@
 
             // listen for the toggle event from the server
             socket.on("led", function (light) {
-                console.log(light);
                 if (light.state == true) {
                     $("#led").text("ON");
                 } else {
@@ -1697,8 +1696,9 @@
             }); 
 
             // change state of the manual mode trigger value on the socket server
-            $("#automode").change(function () {
+            $("#manualmode").change(function () {
                 if(this.checked){
+                    console.log("checked");
                     socket.emit("trigger", { state: true });
                 }
                 else{
@@ -1706,13 +1706,13 @@
                 }
             }); 
 
-            socket.on("mode", function (automode) {
-                console.log(automode);
+            socket.on("mode", function (manualmode) {
                 // if the trigger state is true then disable manual button
-                if (automode.state == true) {
-                    $("#toggleLED").attr("disabled", true);
+                console.log(manualmode.state);
+                if (manualmode.state == true) {
+                    $("#manual").css("display", "block");
                 } else {
-                    $("#toggleLED").attr("disabled", false);
+                    $("#manual").css("display", "none");
                 }
             });
         </script>

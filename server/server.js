@@ -135,6 +135,7 @@ app.get("/", function (req, res) {
         });
 });
 
+
 // app.post("/", function (req, res) {
 //     res.send("Got the temp data, thanks..!!");
 //     // save the record to the database
@@ -154,7 +155,7 @@ app.get("/", function (req, res) {
 // });
 
 var light = { state: false };
-var automode = { state: false };
+var manualmode = { state: false };
 
 // socket.io part
 io.on("connection", function (client) {
@@ -179,13 +180,13 @@ io.on("connection", function (client) {
     });
 
     // emit a socket for triggering manual mode
-    io.sockets.emit("mode", automode);
+    io.sockets.emit("mode", manualmode);
     client.on("trigger", function (state) {
-        automode.state = !automode.state;
+        manualmode.state = !manualmode.state;
         light.state = light.state;
-        console.log("id: " + client.id + " automode: " + automode.state);
+        console.log("id: " + client.id + " manualmode: " + manualmode.state);
         console.log("id: " + client.id + " light: " + light.state);
-        io.sockets.emit("led", light, "mode", automode);
+        io.sockets.emit("mode", manualmode);
     });
 });
 
