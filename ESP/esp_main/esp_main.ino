@@ -31,7 +31,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 const char *ssid = "Cormac";
 const char *password = "+Ah(nstP7.U7+qz";
 const char *host = "192.168.100.17";
-const int httpPort = 3000;
+const int httpPort = 8000;
 
 // soil moisture value define
 int moisture_value = 0, moisture_state = 0xFF;

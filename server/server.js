@@ -136,23 +136,23 @@ app.get("/", function (req, res) {
 });
 
 
-// app.post("/", function (req, res) {
-//     res.send("Got the temp data, thanks..!!");
-//     // save the record to the database
-//     // tempController.saveTemp(req.body);
-//     console.log(req.body.temperature);
+app.post("/", function (req, res) {
+    res.send("Got the temp data, thanks..!!");
+    // save the record to the database
+    // tempController.saveTemp(req.body);
+    console.log(req.body.temperature);
 
-//     // add temperature to the database
-//     tempController.addTemp(req, res);
+    // add temperature to the database
+    tempController.addTemp(req, res);
 
-//     // add soil moisture to the database
-//     soilController.addSoil(req, res);
+    // add soil moisture to the database
+    soilController.addSoil(req, res);
 
-//     // add light to the database
-//     lightController.addLight(req, res);
+    // add light to the database
+    lightController.addLight(req, res);
 
-//     console.log(JSON.stringify(req.body));
-// });
+    console.log(JSON.stringify(req.body));
+});
 
 var light = { state: false };
 var pump = { state: false };
@@ -207,7 +207,7 @@ io.on("connection", function (client) {
 });
 
 // define port
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 var server = server.listen(port, () => {
     console.log(`http://localhost:${port}`);
